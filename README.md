@@ -53,3 +53,5 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 ## 📜 Licencja
 MIT — możesz używać, modyfikować i udostępniać.
 
+Do użytku edukacyjnego, badawczego i red-team/blue-team.
+Zakaz wykorzystania do celów szkodliwych.
