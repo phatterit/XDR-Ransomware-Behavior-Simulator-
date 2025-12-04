@@ -30,3 +30,8 @@ Uruchom PowerShell jako administrator:
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
 .\Test-High.ps1
+
+## Licencja
+
+Do użytku edukacyjnego, badawczego i red-team/blue-team.
+Zakaz wykorzystania do celów szkodliwych.
