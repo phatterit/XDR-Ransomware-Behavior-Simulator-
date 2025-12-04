@@ -1,8 +1,10 @@
-# Ransomware Simulation - Low Intensity Test
-# Safe test – does NOT encrypt, NOT delete, NOT modify files.
+# Ransomware Simulation - Low Intensity Test (WinPS compatible)
 
-$bytes = New-Object byte[] 5000000  # 5 MB in-memory buffer
+$bytes = New-Object byte[] 5000000
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+
 for ($i = 0; $i -lt 50; $i++) {
-    [System.Security.Cryptography.RandomNumberGenerator]::Fill($bytes)
+    $rng.GetBytes($bytes)
 }
+
 Write-Output "Low intensity ransomware behavior simulation completed."
