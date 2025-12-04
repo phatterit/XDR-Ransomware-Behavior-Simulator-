@@ -30,20 +30,35 @@ function Run-BasicTest {
 function Run-MediumTest {
     Write-Log "==== Medium Test Started ===="
 
-    try {
-        $folder = "$env:TEMP\MediumTest"
-        New-Item -ItemType Directory -Path $folder -Force | Out-Null
-        Write-Log "[INFO] Created folder: $folder"
+    $folder = "$env:TEMP\MediumTest"
+    New-Item -ItemType Directory -Path $folder -Force | Out-Null
+    Write-Log "[INFO] Created folder: $folder"
 
-        for ($i = 1; $i -le 100; $i++) {
-            $f = "$folder\file_$i.txt"
-            Set-Content $f "Medium test file $i"
-            Write-Log "[INFO] Created file: file_$i.txt"
-        }
+    $total = 100
+    $progress = 0
 
-        Start-Sleep -Seconds 1
-        Write-Log "[INFO] Medium test completed."
+    for ($i = 1; $i -le $total; $i++) {
+
+        $f = "$folder\file_$i.txt"
+        Set-Content $f "Medium test file $i"
+        Write-Log "[INFO] Created file: file_$i.txt"
+
+        $progress = [math]::Round(($i / $total) * 100)
+
+        # update progress bar in GUI
+        $Global:ProgressBar.Value = $progress
+        $Global:ProgressLabel.Content = "$progress%"
+
+        Start-Sleep -Milliseconds 20
     }
+
+    Write-Log "[INFO] Medium test completed."
+    Write-Log "==== Medium Test Ended ===="
+
+    $Global:ProgressBar.Value = 0
+    $Global:ProgressLabel.Content = ""
+}
+
     catch {
         Write-Log "[ERROR] Medium test failed: $_"
     }
@@ -54,16 +69,35 @@ function Run-MediumTest {
 function Run-HighTest {
     Write-Log "==== High Test Started ===="
 
-    try {
-        $folder = "$env:TEMP\HighTest"
-        New-Item -ItemType Directory -Path $folder -Force | Out-Null
-        Write-Log "[INFO] Created high test folder: $folder"
+    $folder = "$env:TEMP\HighTest"
+    New-Item -ItemType Directory -Path $folder -Force | Out-Null
+    Write-Log "[INFO] Created folder: $folder"
 
-        for ($i = 1; $i -le 300; $i++) {
-            $f = "$folder\high_$i.txt"
-            Set-Content $f ("HIGH TEST FILE #$i")
-            Write-Log "[INFO] Created high test file high_$i.txt"
-        }
+    $total = 300
+    $progress = 0
+
+    for ($i = 1; $i -le $total; $i++) {
+
+        $f = "$folder\high_$i.txt"
+        Set-Content $f "High test file $i"
+        Write-Log "[INFO] Created file high_$i.txt"
+
+        $progress = [math]::Round(($i / $total) * 100)
+
+        # GUI progress update
+        $Global:ProgressBar.Value = $progress
+        $Global:ProgressLabel.Content = "$progress%"
+
+        Start-Sleep -Milliseconds 10
+    }
+
+    Write-Log "[INFO] High test completed."
+    Write-Log "==== High Test Ended ===="
+
+    $Global:ProgressBar.Value = 0
+    $Global:ProgressLabel.Content = ""
+}
+
 
         # Simulate “heavier” behavior flagged by XDR
         Write-Log "[INFO] Starting heavy CPU cycle simulation..."
@@ -142,5 +176,23 @@ $Grid.Children.Add($btnBasic)
 $Grid.Children.Add($btnMedium)
 $Grid.Children.Add($btnHigh)
 $Grid.Children.Add($btnOpenLog)
+
+# Progress bar
+$ProgressBar = New-Object System.Windows.Controls.ProgressBar
+$ProgressBar.Margin = "20,150,20,0"
+$ProgressBar.Height = 20
+$ProgressBar.Minimum = 0
+$ProgressBar.Maximum = 100
+
+$ProgressLabel = New-Object System.Windows.Controls.Label
+$ProgressLabel.Margin = "20,175,20,0"
+$ProgressLabel.HorizontalAlignment = "Center"
+$ProgressLabel.FontSize = 14
+
+$Global:ProgressBar = $ProgressBar
+$Global:ProgressLabel = $ProgressLabel
+
+$Grid.Children.Add($ProgressBar)
+$Grid.Children.Add($ProgressLabel)
 
 $Window.ShowDialog() | Out-Null
