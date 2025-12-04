@@ -1,3 +1,5 @@
+🇵🇱 README_PL.md
+
 # Symulacje zachowania ransomware (bezpieczne) – Testy XDR/EDR
 
 Ten projekt zawiera **3 poziomy bezpiecznych testów**, które pozwalają
