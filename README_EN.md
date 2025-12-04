@@ -29,3 +29,8 @@ Run PowerShell as administrator:
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
 .\Test-High.ps1
+
+License
+
+For research, education, red‑team and blue‑team training only.
+Not for malicious use.
