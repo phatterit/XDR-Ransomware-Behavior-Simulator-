@@ -24,6 +24,11 @@ Skrypty odwołują się do technik:
 - T1486 – Data Encrypted for Impact (symulacja)  
 - T1490 – Inhibit System Recovery (podobieństwo behawioralne)  
 
+## Licencja
+
+Do użytku edukacyjnego, badawczego i red-team/blue-team.
+Zakaz wykorzystania do celów szkodliwych.
+
 ## Użycie
 Uruchom PowerShell jako administrator:
 
@@ -31,7 +36,3 @@ Uruchom PowerShell jako administrator:
 Set-ExecutionPolicy Bypass -Scope Process -Force
 .\Test-High.ps1
 
-## Licencja
-
-Do użytku edukacyjnego, badawczego i red-team/blue-team.
-Zakaz wykorzystania do celów szkodliwych.
