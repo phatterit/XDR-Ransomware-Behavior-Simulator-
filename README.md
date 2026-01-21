@@ -124,6 +124,20 @@ Odzwierciedla realne procesy **Blue Team / Purple Team / Security Engineering**.
 
 ---
 
+## Editions
+
+- **PowerShell Edition**
+  - Rapid deployment
+  - WPF GUI
+  - AMSI-visible execution
+
+- **Native C++ Edition**
+  - No PowerShell / No AMSI
+  - Direct WinAPI execution
+  - Lower-level telemetry generation
+
+---
+
 ## 📄 Licencja
 
 Rekomendowane:
