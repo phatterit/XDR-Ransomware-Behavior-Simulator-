@@ -1,57 +1,144 @@
-# XDR Ransomware Behavior Simulator (Safe)
+# # # XDR Diagnostic Tool
 
-Ten projekt zawiera **BEZPIECZNE** skrypty PowerShell symulujące zachowania typowe dla ransomware.  
-ŻADEN skrypt nie szyfruje, nie modyfikuje ani nie usuwa plików – działają tylko w pamięci,  
-powodując charakterystyczne wzorce I/O oraz kryptografii, które powinny być wykrywane przez XDR/EDR.
-
-Skrypty są przeznaczone do:
-- testowania systemów XDR/EDR
-- edukacji w zakresie cyberbezpieczeństwa
-- badań red-team / blue-team
-- laboratoriów ofensywnych i defensywnych
-
-## ⚠️ OSTRZEŻENIE
-Te skrypty **NIE są malware**, jednak imitują ich zachowanie.  
-Używaj ich **WYŁĄCZNIE** na własnym komputerze lub w środowisku testowym/labowym.  
-Autor nie ponosi odpowiedzialności za niewłaściwe użycie.
+**Enterprise-grade narzędzie do audytu XDR / EDR**  
+*Bezpieczna symulacja ataków • MITRE ATT&CK • Raportowanie HTML*
 
 ---
 
-## 📂 Zawartość
+## 📌 Opis projektu
 
-### 1️⃣ `test_light.ps1`
-Lekka symulacja — minimalne zachowania podejrzane  
-Powinno wywołać alert typu:  
-**"Suspicious PowerShell Crypto Activity"**
+**XDR Diagnostic Tool** to **produkcyjne narzędzie audytowe** przeznaczone do oceny skuteczności systemów **XDR / EDR** na stacjach roboczych z systemem Windows.
 
-### 2️⃣ `test_medium.ps1`
-Średnia symulacja — umiarkowane I/O + operacje AES  
-Alerty takie jak:  
-**"Potential Ransomware Behavior"**
+Projekt koncentruje się na **kontrolowanej symulacji zachowań atakujących**, generując **rzeczywistą telemetrię bezpieczeństwa**, bez wykorzystywania podatności, bez destrukcji danych i bez przechwytywania poufnych informacji.
 
-### 3️⃣ `test_aggressive.ps1`
-Agresywna symulacja — intensywna kryptografia i masowe otwieranie plików  
-Alerty XDR zazwyczaj:  
-**"Ransomware-like Activity Detected"**  
-**"Mass File Access"**
+Celem narzędzia jest odpowiedź na kluczowe pytanie:
+
+> **Czy wdrożona ochrona endpointów faktycznie wykrywa i blokuje realne techniki ataku?**
 
 ---
 
-## ▶️ Jak uruchomić?
+## 🎯 Założenia projektowe
 
-Otwórz PowerShell (Run as Administrator):
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force
-.\tests\test_light.ps1
-.\tests\test_medium.ps1
-.\tests\test_aggressive.ps1
-```
+- bezpieczne użycie w środowisku produkcyjnym  
+- testy oparte o **zachowanie**, a nie sygnatury  
+- brak dumpów pamięci i kradzieży danych  
+- jednoznaczne rozróżnienie: **zablokowane vs przepuszczone**  
+- czytelne raporty dla zespołów SOC / Blue / Purple  
 
 ---
 
-## 📜 Licencja
-MIT — możesz używać, modyfikować i udostępniać.
+## 🧠 Koncepcja działania
 
-Do użytku edukacyjnego, badawczego i red-team/blue-team.
-Zakaz wykorzystania do celów szkodliwych.
+- symulacja **rzeczywistych technik ataku**, nie malware  
+- użycie **WinAPI poprzez zahartowany kod C#**  
+- każde zdarzenie klasyfikowane jako:
+  - **ALERT** – atak zakończył się powodzeniem (ryzyko)
+  - **BLOCK / FAIL** – mechanizmy ochrony zadziałały poprawnie  
+- automatyczne generowanie **raportu HTML**
+
+---
+
+## 🧩 Zaimplementowane techniki (MITRE ATT&CK)
+
+| Technika | Opis |
+|--------|-----|
+| Ransomware | Szyfrowanie AES-256 w pamięci + interakcja z VSS |
+| Credential Access | Próba dostępu do procesu LSASS (`OpenProcess`) |
+| Persistence | Modyfikacja klucza `Run` w rejestrze |
+| Command & Control | HTTPS beacon (`/favicon.ico`) |
+| Process Injection (bezpieczne) | Enumeracja uchwytów procesów |
+| Keylogging (audit-safe) | Globalny hook klawiatury z `CallNextHookEx` |
+
+Wszystkie testy są **odwracalne, niedestrukcyjne i bezpieczne**.
+
+---
+
+## 🛡️ Stabilność i bezpieczeństwo
+
+- poprawna obsługa **Garbage Collectora** (delegaty globalne)  
+- zgodność z kontraktami **WinAPI**  
+- brak blokowania interfejsu użytkownika (WPF Dispatcher)  
+- automatyczne czyszczenie po testach  
+- rozpoznawanie kontekstu uruchomienia (Administrator / User)  
+
+Narzędzie **nie omija zabezpieczeń**, lecz **sprawdza, czy one działają**.
+
+---
+
+## 📊 Raportowanie HTML
+
+Wbudowany silnik raportowania generuje **czytelny raport HTML**, zawierający:
+
+- chronologiczną listę zdarzeń  
+- kolorowe oznaczenia (ALERT / BLOCK / FAIL)  
+- podsumowanie skuteczności ochrony  
+- informacje o hoście, użytkowniku i czasie testów  
+
+Raport jest przeznaczony zarówno dla zespołów technicznych, jak i decyzyjnych.
+
+---
+
+## 🖥️ Interfejs użytkownika
+
+- PowerShell + WPF  
+- czytelny i stabilny interfejs  
+- osobne przyciski dla każdego scenariusza  
+- paski postępu  
+- generowanie raportu jednym kliknięciem  
+
+---
+
+## 🚀 Zastosowania
+
+- audyt skuteczności XDR / EDR  
+- weryfikacja widoczności SOC  
+- testy Purple Team  
+- laboratoria bezpieczeństwa  
+- projekty akademickie (prace inżynierskie, dyplomowe)  
+- wewnętrzne testy bezpieczeństwa  
+
+---
+
+## ⚠️ Zastrzeżenie
+
+Projekt **nie jest złośliwym oprogramowaniem** i **nie służy do nieautoryzowanych działań**.
+
+Nie wykorzystuje podatności, nie kradnie danych i nie powoduje trwałych zmian w systemie.
+
+Uruchamiaj wyłącznie:
+- na własnych systemach  
+- lub w środowiskach, na które posiadasz zgodę  
+
+---
+
+## 👤 Autor i cel
+
+Projekt został stworzony jako **narzędzie inżynierii bezpieczeństwa**, z naciskiem na:
+
+- stabilność  
+- poprawność implementacji niskopoziomowych API  
+- wartość audytową  
+- czytelność wyników  
+
+Odzwierciedla realne procesy **Blue Team / Purple Team / Security Engineering**.
+
+---
+
+## 📄 Licencja
+
+Rekomendowane:
+- **MIT** – do celów edukacyjnych i portfolio  
+- **Apache 2.0** – przyjazna środowiskom enterprise  
+
+---
+
+## 🔚 Status projektu
+
+**v5.2 – projekt ukończony funkcjonalnie**
+
+Dalszy rozwój możliwy w kierunku:
+- analizy porównawczej XDR  
+- mapowania pokrycia MITRE  
+- automatyzacji testów  
+
+Nie w kierunku zwiększania agresywności testów.
