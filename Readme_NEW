@@ -1,0 +1,164 @@
+XDR-Tester
+
+Enterprise-grade XDR / EDR audit & reporting tool
+Safe adversary emulation • MITRE ATT&CK oriented • HTML reporting
+
+📌 Overview
+
+XDR-Tester is a production-safe security audit tool designed to evaluate the effectiveness of XDR / EDR solutions on Windows endpoints.
+
+The project focuses on controlled adversary emulation, generating real behavioral telemetry without exploiting vulnerabilities or causing system damage.
+Its primary goal is to answer a simple but critical question:
+
+Does our endpoint protection actually detect and block real attack behaviors?
+
+🎯 Design Goals
+
+Safe for production environments
+
+Behavior-based testing (not signatures)
+
+No data destruction, no credential dumping
+
+Clear distinction between blocked vs allowed actions
+
+Actionable reporting for Blue / Purple / Security Engineering teams
+
+🧠 Core Concepts
+
+Simulates real attack techniques, not malware
+
+Uses WinAPI through hardened C# bindings
+
+Differentiates between:
+
+ALERT → attack succeeded (security risk)
+
+BLOCK / FAIL → protection worked as expected
+
+Generates HTML audit reports for non-technical stakeholders
+
+🧩 Implemented Techniques (MITRE ATT&CK Oriented)
+Technique	Description
+Ransomware behavior	AES-256 memory encryption + VSS interaction
+Credential Access	LSASS OpenProcess probing (no dump)
+Persistence	Registry Run key modification
+Command & Control	HTTPS beaconing (/favicon.ico)
+Process Injection (safe)	Handle enumeration + global keyboard hook
+Keylogging (audit-safe)	Global hook with CallNextHookEx (no capture)
+
+All techniques are implemented in a non-destructive, reversible, and auditable manner.
+
+🛡️ Security & Stability
+
+Garbage Collector safe (global delegate references)
+
+Correct WinAPI contracts (no undefined behavior)
+
+No UI freezing (WPF dispatcher control)
+
+Context-aware execution (Admin vs User mode)
+
+Full cleanup after every test
+
+The tool is explicitly designed not to bypass security, but to test if security reacts properly.
+
+📊 Reporting
+
+XDR-Tester includes a built-in HTML reporting engine:
+
+Color-coded timeline of events
+
+Aggregated statistics:
+
+Scenarios executed
+
+Attacks blocked
+
+Attacks allowed (risk)
+
+Host, user, and execution context
+
+Suitable for:
+
+SOC reviews
+
+audits
+
+academic projects
+
+management summaries
+
+🖥️ GUI
+
+Built with PowerShell + WPF
+
+Clear status indicators
+
+Per-test progress bars
+
+Manual execution of scenarios
+
+One-click report generation
+
+🚀 Use Cases
+
+XDR / EDR effectiveness audits
+
+SOC visibility validation
+
+Purple Team gap analysis
+
+Security engineering labs
+
+Academic projects and theses
+
+Internal security posture assessments
+
+⚠️ Disclaimer
+
+This project is not malware and is not intended for unauthorized use.
+
+It does not exploit vulnerabilities, does not dump credentials, and does not exfiltrate data.
+
+Run only:
+
+on systems you own
+
+or where you have explicit authorization
+
+👤 Author & Motivation
+
+This project was created as a security engineering / cyber defense project, with focus on:
+
+system stability
+
+correctness of low-level API usage
+
+meaningful security telemetry
+
+audit-friendly output
+
+It reflects real-world Blue / Purple / Security Engineering workflows, rather than offensive exploitation.
+
+📄 License
+
+Choose according to your preference, recommended options:
+
+MIT (open / portfolio friendly)
+
+Apache 2.0 (enterprise-friendly)
+
+🔚 Project Status
+
+v5.2 – Feature Complete
+
+Further development would focus on:
+
+analytics
+
+MITRE coverage scoring
+
+CI / automated runs
+
+Not on adding more aggressive attack primitives.
